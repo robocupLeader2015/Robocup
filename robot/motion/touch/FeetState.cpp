@@ -11,6 +11,8 @@ FeetState::FeetState(){
    }
 }
 
+//Commented by:James
+//get footer sensor data from shared data retrieved from AgentTouch
 void FeetState::update(const SensorValues &sensors, Kinematics &kinematics){
    float footSensor[2][4];
    footSensor[0][0] = sensors.sensors[Sensors::LFoot_FSR_FrontLeft];

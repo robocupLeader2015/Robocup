@@ -36,6 +36,8 @@ Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <stdexcept>
 #include "utils/Logger.hpp"
 
+//Commented by:James
+//this is just use semaphone to retrieve concurrent data from specific memory
 AgentTouch::AgentTouch() {
    // open sempahore
    semaphore = sem_open(AGENT_SEMAPHORE, O_RDWR);
@@ -74,6 +76,8 @@ AgentTouch::~AgentTouch() {
    llog(INFO) << "AgentTouch destroyed" << std::endl;
 }
 
+//commented by:James
+//return the sensor data from the latest record
 SensorValues AgentTouch::getSensors(Kinematics &kinematics) {
    sem_wait(semaphore);
    while (!sem_trywait(semaphore)) ;

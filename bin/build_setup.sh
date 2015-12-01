@@ -123,7 +123,9 @@ chmod -R 755 ${CTC_DIR}/cross/libexec/
 # Jayen's magic sauce
 myecho rsync\'ing sysroot_legacy/usr, this may take a *long* time...
 mkdir -p "$CTC_DIR"/../sysroot_legacy/usr/
-rsync -a --stats --ignore-existing runswift.cse.unsw.edu.au::opennao-1.14.1/ "$CTC_DIR"/../sysroot_legacy/usr/ --exclude portage
+#rsync -a --stats --ignore-existing runswift.cse.unsw.edu.au::opennao-1.14.1/ "$CTC_DIR"/../sysroot_legacy/usr/ --exclude portage
+rsync -az --stats --ignore-existing rsync://runswift.cse.unsw.edu.au:4373/opennao-1.14.1/ "$CTC_DIR"/../sysroot_legacy/usr/ --exclude portage
+
 
 ############ Building ###########
 
