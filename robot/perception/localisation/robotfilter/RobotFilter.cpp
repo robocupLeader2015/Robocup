@@ -39,6 +39,8 @@ const int NO_CLOSE_OBSERVATION = -1;
 //Make my life easier for iterating over vectors
 #define FOR_EACH(index, vector) for (unsigned int index = 0; index < vector.size(); ++index)
 
+//Commented by:James
+//a key function called from LocalizationAdapter
 std::vector<RobotObstacle> RobotFilter::update(const RobotFilterUpdate &update) {
 
     //Only update visual robots if not incapacitated
@@ -48,6 +50,7 @@ std::vector<RobotObstacle> RobotFilter::update(const RobotFilterUpdate &update) 
 
         while (it != groupedRobots.end()) {
             GroupedRobots &group = (*it);
+            //For each robot, calculate the observations inside
             group.tick(update.odometryDiff, update.headYaw, update.robotPos);
             if (group.isEmpty()) {
                 it = groupedRobots.erase(it);
@@ -57,6 +60,8 @@ std::vector<RobotObstacle> RobotFilter::update(const RobotFilterUpdate &update) 
         }
 
 
+        //Commented by:James
+        //this is the key algorithm part for the update of multiple observation
         //Greedy algorithm to determine what observation goes into what group.
         //Current assumptions: multiple observations cannot go into the same group,
         //even if they are close together. The closest observation gets merge

@@ -41,18 +41,26 @@ Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "types/RobotFilterUpdate.hpp"
 #include "perception/localisation/LocalisationDefs.hpp"
 
+
+//Commented by:James
+//This is a multi varialbe kalman filter
+//need to filter out unsuitable candidates
+//and merge to save state space
 /**
  * Robot filter deals with deciding what observations should be placed into
  * what groups depending on whether it is possible to merge it into that group.
  */
 class RobotFilter {
    public:
+	  //commented by:James
+	  //keep track of obstacle and store the paths to avoid it
       std::vector<RobotObstacle> update(const RobotFilterUpdate &update);
 
    private:
 
       std::vector<RobotObstacle> filteredRobots;
       std::vector<RobotObstacle> generateRobotObstacles() const;
+      //to track a group of robots?
       std::vector<GroupedRobots> groupedRobots;
 };
 

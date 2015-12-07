@@ -47,6 +47,8 @@ Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 using namespace std;
 using namespace boost;
 
+//Commented by:James
+//this is the thread running kinematics, vision, localisation, and behaviour
 PerceptionThread::PerceptionThread(Blackboard *bb)
    : Adapter(bb), 
      kinematicsAdapter(bb),
@@ -58,10 +60,14 @@ PerceptionThread::PerceptionThread(Blackboard *bb)
 
    releaseLock(serialization);
    //uint8_t const* currentFrame = readFrom(vision, currentFrame);
+   //commented by:James
+   //read from vision blackboard which retrives the top and bottom frames from camera
    uint8_t const* topFrame = readFrom(vision, topFrame);
    uint8_t const* botFrame = readFrom(vision, botFrame);
    size_t ret;
 
+   //dump both frames into local files
+   //why crashframe?
    if (topFrame != NULL && botFrame != NULL) {
       string file = "/home/nao/crashframe-" +
                     boost::lexical_cast<string>(time(NULL)) + ".yuv";
@@ -74,7 +80,8 @@ PerceptionThread::PerceptionThread(Blackboard *bb)
       ret = std::system(file.c_str());
    }
 
-
+   //Commented by:James
+   //Read camera control parameters
    readOptions(bb->config);
    writeTo(thread, configCallbacks[Thread::name],
            boost::function<void(const boost::program_options::variables_map &)>
@@ -86,6 +93,8 @@ PerceptionThread::~PerceptionThread() {
    writeTo(thread, configCallbacks[Thread::name], boost::function<void(const boost::program_options::variables_map &)>());
 }
 
+//Commented by:James
+//every tick will trigger actions for kinematics, vision, localization, and
 void PerceptionThread::tick() {
    llog(DEBUG1) << "Perception.. ticking away" << endl;
    Timer t1;

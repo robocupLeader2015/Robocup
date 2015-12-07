@@ -57,9 +57,12 @@ class LocalisationAdapter : Adapter {
    private:
       /* Filter module instances */
       Localiser *L;
+      //commented by:James
+      //filter for multi variable Kalman filter
       RobotFilter *robotFilter;
       bool firstCycle;
       int playerNumber;
+      //odometry-> measurement for dead reckon
       Odometry prevOdometry;
       int64_t prevTimestamp;
       uint8_t prevGameState;
@@ -68,14 +71,30 @@ class LocalisationAdapter : Adapter {
       
       std::ofstream logStream;
       
+      //commented by;James
+      //WTH are the following methods
+      //not even a little bit explanation???
+      //let me guess
+      //according to the passed in state, can localization function be activated
       bool canLocaliseInState(uint8_t state, std::string skill);
+
+      //Commented by:James
+      //if the robot is not picked up by referees, is not in the process of diving, is not dead,
+      //and is not in the process of getting up
+      //the robot can do observation
       bool canDoObservations(void);
       
+      //Commented by:James
+      //State transition for the robot from Init, Ready, Set, Playing, Finished, Invalid, and Penalized
+      //The following two methods are checking for the transition from Initi to Set, Set to Playing.
       bool haveTransitionedSetToPlay(void);
       bool haveTransitionedIntoSet(void);
       std::vector<AbsCoord> getTeammatePoses(void);
       
+      //Commented by:James
+      //move forward or turn or towards left? the last condition is weird
       bool amWalking(const ActionCommand::All &commands);
+      //turning head to search for ball?
       bool amTurningHead(const ActionCommand::All &commands);
       
       void writeResultToBlackboard(void);

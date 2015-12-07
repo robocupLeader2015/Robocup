@@ -78,6 +78,8 @@ struct LocaliserBundle {
    double dTimeSeconds;
 };
 
+//commented by:James
+//a class which is used to update the position estimation
 class Localiser {
    public:
       Localiser(int playerNumber);

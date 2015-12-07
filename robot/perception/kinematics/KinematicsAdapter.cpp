@@ -49,6 +49,8 @@ void KinematicsAdapter::tick() {
    llog(VERBOSE) << "Kinematics took: " << t.elapsed_us() << " us" << endl;
    
    t.restart();
+   //Commented by:James
+   //update sonar sensor data
    sonarFilter.update(readFrom(motion, sonarWindow));
    writeTo(kinematics, sonarFiltered, sonarFilter.sonarFiltered);
    llog(VERBOSE) << "Sonar Filter took: " << t.elapsed_us() << " us" << endl;

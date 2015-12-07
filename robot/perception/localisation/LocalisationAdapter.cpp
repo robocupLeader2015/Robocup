@@ -104,10 +104,14 @@ void logFPS(unsigned fps) {
    }
 }
 
+//Commented by:James
+//it is activated per logic tick to execute localization task
 void LocalisationAdapter::tick() {
    llog(VERBOSE) << "Localisation.. ticking away" << endl;
    Timer timer;
    timer.restart();
+   //Commented by:James
+   //what is the current command
    const ActionCommand::All active = readFrom(motion, active);
 
    /* calculate odometry */
@@ -115,6 +119,8 @@ void LocalisationAdapter::tick() {
 
    Odometry odometryDiff;
    if (!firstCycle) {
+	   //Commented by:James
+	   //get speed?
       odometryDiff = (newOdometry - prevOdometry);
    }
    prevOdometry = newOdometry;
@@ -130,7 +136,9 @@ void LocalisationAdapter::tick() {
    }
    prevTimestamp = timestamp;
    
+   //get kinematics data from sensorsLagged?
    SensorValues values = readFrom(kinematics, sensorsLagged);
+   //now read those data from VisionAdapater
    VisionUpdateBundle visionUpdateBundle(
          readFrom(vision, fieldEdges),
          readFrom(vision, fieldFeatures),
@@ -159,6 +167,7 @@ void LocalisationAdapter::tick() {
    bool isPenalised = 
          readFrom(gameController, our_team).players[playerNumber - 1].penalty != PENALTY_NONE;
 
+   //update the robot's own shared belief
    handleMySharedDistribution();
    llog(VERBOSE) << "Localisation.. handle shared took " << timer.elapsed_us() << endl;
    timer.restart();
@@ -199,6 +208,8 @@ void LocalisationAdapter::tick() {
    llog(VERBOSE) << "Localisation.. shared update took " << timer.elapsed_us() << endl;
    timer.restart();
 
+   //Commented by:James
+   //This is the key part where the updated vision/kinematics data are used to update the robot's beliefs
    RobotFilterUpdate update;
    update.visualRobots = readFrom(vision, robots);
    update.robotPos = readFrom(localisation, robotPos);
@@ -206,8 +217,10 @@ void LocalisationAdapter::tick() {
    update.odometryDiff = odometryDiff;
    update.isIncapacitated = isIncapacitated(active.body.actionType);
 
+   //here is the key method
    robotFilter->update(update);
 
+   //write the localization result back to blackboard
    writeResultToBlackboard();
    llog(VERBOSE) << "Localisation.. blackboard write took " << timer.elapsed_us() << endl;
    timer.restart();
@@ -229,6 +242,8 @@ void LocalisationAdapter::tick() {
    llog(VERBOSE) << "Localisation: Finished" << std::endl;
 }
 
+//Commented by:James
+//What is skill? why string instead of enumeration?
 bool LocalisationAdapter::canLocaliseInState(uint8_t state, std::string skill) {
    if (skill == "GameController") {
       return state == STATE_READY || state == STATE_SET || state == STATE_PLAYING;
@@ -237,6 +252,10 @@ bool LocalisationAdapter::canLocaliseInState(uint8_t state, std::string skill) {
    }
 }
 
+//Commented by:James
+//if the robot is not picked up by referees, is not in the process of diving, is not dead,
+//and is not in the process of getting up
+//the robot can do observation
 bool LocalisationAdapter::canDoObservations(void) {
    ActionCommand::Body::ActionType currentAction = readFrom(motion, active).body.actionType;
    

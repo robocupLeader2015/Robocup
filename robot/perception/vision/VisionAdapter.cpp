@@ -116,11 +116,17 @@ void VisionAdapter::tick() {
       << " us" << endl;
    t.restart();
 
+   //Commented by:James
+   //takes motion sensor data
+   //and kinematics sensor data
    SensorValues values = readFrom(motion, sensors);
    SensorValues valuesLagged = readFrom(kinematics, sensorsLagged);
    V.convRR.updateAngles(valuesLagged);
 
-   // robot detection needs sonar
+   //Commented by:James
+   //gets sonar sensor from kinematics
+   //robot detection needs sonar
+   //why Vision keeps two robotDetection
    V.robotDetection._sonar = readFrom(kinematics, sonarFiltered);
    V.oldRobotDetection.sonar = readFrom(kinematics, sonarFiltered);
 

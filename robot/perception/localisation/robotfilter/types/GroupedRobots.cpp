@@ -200,6 +200,11 @@ bool GroupedRobots::isEmpty() const {
     return observations.empty();
 }
 
+//Commented by:James
+//the name is so confusing
+//it is actually update all the observations
+//if the observation is too old, remove the observation
+//that's it
 void GroupedRobots::tick(Odometry odometryDiff, float headYaw, const AbsCoord &robotPos) {
 
     calculateCoordinates(); // Hack for some reason crashing, testing whether this fixes it.
